@@ -12,16 +12,23 @@ export default function LoginScreen() {
   const [senha, setSenha] = useState('');
   const [carregando, setcarregando] = useState(false);
 
-  function fazerLogin() {
+  function validarCampos() {
     if (email.trim() === ''){
       alert('Digite seu e-mail!');
-      return;
+      return false;
     }
     if(senha.trim() === '') {
     alert('Digite sua senha!');
+    return false;
+  }
+  return true;
+}
+function fazerLogin() {
+  if(!validarCampos()) {
     return;
   }
   setcarregando(true);
+
   setTimeout(() => {
     setcarregando(false);
     alert('Login realizado!');
@@ -53,8 +60,11 @@ export default function LoginScreen() {
         onChangeText={setSenha}
       />
 
-      <Pressable style={styles.botao} onPress={fazerLogin}>
-        <Text> {carregando ? 'Entrando...' : 'ENTRAR'} </Text>
+      <Pressable style={[styles.botao, carregando && styles.botaoDesabilitado]}
+       onPress={fazerLogin}
+       disabled={carregando}>
+        <Text style={styles.textoBotao}> 
+          {carregando ? 'Entrando...' : 'ENTRAR'} </Text>
       </Pressable>
     </View>
   );
@@ -91,16 +101,20 @@ const styles = StyleSheet.create({
   },
 
   botao: {
-    height: 50,
-    borderRadius: 8,
-    justifyContent: 'center',
+    // height: 50,
+    borderRadius: 10,
+    padding: 15,
+    // justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#111',
+    backgroundColor: '#111111',
   },
 
   textoBotao: {
-    color: '#fff',
+    color: '#ffffff',
     fontSize: 16,
     fontWeight: 'bold',
   },
+  botaoDesabilitado: {
+    opacity: 0.5,
+  }
 });
