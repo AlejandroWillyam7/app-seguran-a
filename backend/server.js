@@ -1,12 +1,13 @@
+require('dotenv').config();
 const express = require('express');
 const bcrypt = require('bcrypt');
-const conexao = require('./database');
 const jwt = require('jsonwebtoken');
+const conexao = require('./database');
 
 const app = express();
 
 app.use(express.json());
-const JWT_SECRET = 'chave-secreta-do-app';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 app.post('/usuarios', async (req, res) => {
   const { email, senha } = req.body;

@@ -102,7 +102,7 @@ async function verificarLogin() {
 
       const dados = await resposta.json();
 
-      console.log('3 - Dados recebidos:', dados);
+      console.log('3 - Dados recebidos da API');
 
       if (dados.token) {
         console.log('4 - Salvando token...');
