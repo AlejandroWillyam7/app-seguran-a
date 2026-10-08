@@ -126,35 +126,40 @@ async function verificarLogin() {
     }
   }
 
-  async function acessarPerfil() {
-    try {
-      const token =
-        await SecureStore.getItemAsync('token');
+async function acessarPerfil() {
+  try {
+    const token =
+      await SecureStore.getItemAsync('token');
 
-      if (!token) {
-        alert('Você não está autenticado.');
-        return;
-      }
-
-      const resposta = await fetch(
-        'http://10.0.0.83:3000/perfil',
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const dados = await resposta.json();
-
-      alert(
-  `${dados.mensagem}\nE-mail: ${dados.usuario.email}`
-);
-    } catch (erro) {
-      console.log('ERRO:', erro);
-      alert('Erro ao acessar o perfil.');
+    if (!token) {
+      alert('Você não está autenticado.');
+      return;
     }
+
+    const resposta = await fetch(
+      'http://10.0.0.83:3000/perfil',
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+      alert(dados.mensagem || 'Erro ao acessar o perfil.');
+      return;
+    }
+
+    alert(
+      `${dados.mensagem}\nE-mail: ${dados.usuario.email}`
+    );
+  } catch (erro) {
+    console.log('ERRO AO ACESSAR PERFIL:', erro);
+    alert('Erro ao conectar com a API.');
   }
+}
 
   async function sair() {
     await SecureStore.deleteItemAsync('token');
